@@ -60,7 +60,11 @@
 
 	var _BankStoreV2 = _interopRequireDefault(_BankStoreV);
 
-	var _BankActions = __webpack_require__(182);
+	var _BankRewardsStore = __webpack_require__(182);
+
+	var _BankRewardsStore2 = _interopRequireDefault(_BankRewardsStore);
+
+	var _BankActions = __webpack_require__(184);
 
 	var _BankActions2 = _interopRequireDefault(_BankActions);
 
@@ -125,6 +129,12 @@
 	                    this.state.balance.toFixed(2)
 	                ),
 	                _react2.default.createElement(
+	                    'h2',
+	                    null,
+	                    'Your Points Rewards Tier is ',
+	                    this.state.rewardsTier
+	                ),
+	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'atm' },
 	                    _react2.default.createElement('input', { type: 'text', placeholder: 'Enter Ammount', ref: 'ammount' }),
@@ -148,10 +158,13 @@
 	}(_react.Component);
 
 	App.getStores = function () {
-	    return [_BankStoreV2.default];
+	    return [_BankStoreV2.default, _BankRewardsStore2.default];
 	};
 	App.calculateState = function (prevState) {
-	    return { balance: _BankStoreV2.default.getState() };
+	    return {
+	        balance: _BankStoreV2.default.getState(),
+	        rewardsTier: _BankRewardsStore2.default.getState()
+	    };
 	};
 
 	var AppContainer = _utils.Container.create(App);
@@ -26652,6 +26665,147 @@
 
 /***/ },
 /* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _AppDispatcher = __webpack_require__(178);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _BankStoreV = __webpack_require__(183);
+
+	var _BankStoreV2 = _interopRequireDefault(_BankStoreV);
+
+	var _constants = __webpack_require__(181);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	var _utils = __webpack_require__(159);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var BankRewardsStore = function (_ReduceStore) {
+	    _inherits(BankRewardsStore, _ReduceStore);
+
+	    function BankRewardsStore() {
+	        _classCallCheck(this, BankRewardsStore);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(BankRewardsStore).apply(this, arguments));
+	    }
+
+	    _createClass(BankRewardsStore, [{
+	        key: 'getInitialState',
+	        value: function getInitialState() {
+	            return 'Basic';
+	        }
+	    }, {
+	        key: 'reduce',
+	        value: function reduce(state, action) {
+	            this.getDispatcher().waitFor([_BankStoreV2.default.getDispatchToken()]);
+
+	            if (action.type === _constants2.default.DEPOSITED_INTO_ACCOUNT || action.type === _constants2.default.WITHDREW_FROM_ACCOUNT) {
+
+	                var balance = _BankStoreV2.default.getState();
+	                if (balance < 5000) return 'Basic';else if (balance < 10000) return 'Silver';else if (balance < 50000) return 'Gold';else return 'Platinum';
+	            }
+	            return state;
+	        }
+	    }]);
+
+	    return BankRewardsStore;
+	}(_utils.ReduceStore);
+
+	exports.default = new BankRewardsStore(_AppDispatcher2.default);
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _AppDispatcher = __webpack_require__(178);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _utils = __webpack_require__(159);
+
+	var _constants = __webpack_require__(181);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * A BankBalanceStore Version Extending Flux Util’s Base Store Class
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var balance = 0;
+
+	var BankStore = function (_Store) {
+	    _inherits(BankStore, _Store);
+
+	    function BankStore() {
+	        _classCallCheck(this, BankStore);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(BankStore).apply(this, arguments));
+	    }
+
+	    _createClass(BankStore, [{
+	        key: 'getState',
+	        value: function getState() {
+	            return balance;
+	        }
+	    }, {
+	        key: '__onDispatch',
+	        value: function __onDispatch(action) {
+	            switch (action.type) {
+	                case _constants2.default.CREATED_ACCOUNT:
+	                    balance = 0;
+	                    this.__emitChange();
+	                    break;
+	                case _constants2.default.DEPOSITED_INTO_ACCOUNT:
+	                    balance = balance + action.ammount;
+	                    this.__emitChange();
+	                    break;
+	                case _constants2.default.WITHDREW_FROM_ACCOUNT:
+	                    balance = balance - action.ammount;
+	                    this.__emitChange();
+	                    break;
+	            }
+	        }
+	    }]);
+
+	    return BankStore;
+	}(_utils.Store);
+
+	exports.default = new BankStore(_AppDispatcher2.default);
+
+/***/ },
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

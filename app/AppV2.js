@@ -13,6 +13,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Container } from 'flux/utils';
 import BankStore from './BankStoreV3';
+import BankRewardsStore from './BankRewardsStore';
 import BankActions from './BankActions';
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
         	<div>
 				<header>FluxTrust Bank v2</header>
 				<h1>Your balance is ${(this.state.balance).toFixed(2)}</h1>
+                <h2>Your Points Rewards Tier is {this.state.rewardsTier}</h2>
 				<div className="atm">
 					<input type="text" placeholder="Enter Ammount" ref="ammount" />
 
@@ -48,8 +50,11 @@ class App extends Component {
     }
 }
 
-App.getStores = () => ([BankStore]);
-App.calculateState = (prevState) =>({balance: BankStore.getState()});
+App.getStores = () => ([BankStore, BankRewardsStore]);
+App.calculateState = (prevState) =>({
+    balance: BankStore.getState(),
+    rewardsTier:BankRewardsStore.getState()
+});
 
 const AppContainer = Container.create(App);
 
